@@ -1,0 +1,20 @@
+{
+  "name": "@sovrin/thumbserver",
+  "version": "1.0.0",
+  "description": "imagemagik microservice",
+  "main": "index.js",
+  "scripts": {
+    "start": "micro",
+    "dev": "node .",
+    "inspect": "node --inspect node_modules/.bin/micro-dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "micro": "^9.3.3"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0",
+    "regex-router": "^2.0.0"
+  }
+}
