@@ -4,10 +4,10 @@
  * Time: 19:26
  */
 module.exports = (match) => {
-    match(/^\/([sn])?([ew])?thumb(\d+)x(\d+)$/);
+    match(/^\/([sn])?([ew])?thumb(\d+)x(\d+)/);
 
     return (param, next, send) => {
         send(param);
-        next('final');
+        return next('final');
     };
 };

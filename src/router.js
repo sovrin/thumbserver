@@ -1,5 +1,6 @@
 const {send} = require('micro');
 const {default: Router} = require('regex-router');
+const {middleware} = require('./utils');
 
 const router = new Router((req, res) => {
     send(res, 404);
@@ -22,7 +23,21 @@ const wrap = (route, handler, next) => {
  * @param req
  * @param res
  */
-const route = (req, res) => router.route(req, res);
+const route = (req, res) => {
+    router.route(req, res);
+};
+
+/**
+ *
+ * @param middleware
+ */
+const use = (middleware) => {
+    if (!router.middlewares) {
+        router.middlewares = [];
+    }
+
+    router.middlewares.unshift(middleware);
+};
 
 /**
  *
@@ -37,9 +52,11 @@ const register = (next) => (mods) => {
 
         let route = null;
 
-        const handle = mod((match) => {
+        let handle = mod((match) => {
             route = match;
         });
+
+        handle = middleware(handle, router.middlewares);
 
         wrap(route, handle, next);
     }
@@ -52,5 +69,6 @@ const register = (next) => (mods) => {
  */
 module.exports = {
     register,
+    use,
     route,
 };

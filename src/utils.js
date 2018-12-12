@@ -43,10 +43,23 @@ const modules = (path) => {
 };
 
 /**
+ *
+ * @param service
+ * @param middleware
+ * @return {*}
+ */
+const middleware = (service, middleware = []) => (
+    middleware.reduce(
+        (fn, nextMiddleware) => nextMiddleware(fn),
+        service,
+    )
+);
+
+/**
  * User: Oleg Kamlowski <n@sovrin.de>
  * Date: 11.12.2018
  * Time: 19:26
  */
 module.exports = {
-    render, modules
+    render, modules, middleware
 };

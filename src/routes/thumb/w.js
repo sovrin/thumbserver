@@ -4,7 +4,7 @@
  * Time: 00:54
  */
 module.exports = (match) => {
-    match(/^\/thumb(\d+)$/);
+    match(/^\/thumb(\d+)/);
 
     return (param, next, send) => {
         send(param);
