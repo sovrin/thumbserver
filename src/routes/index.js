@@ -1,20 +1,14 @@
-const {register, route} = require('../router');
-
-const routes = [
-    [/^\/thumb(\d+)$/, require('./thumb/w')],
-    [/^\/thumb(\d+)x(\d+)$/, require('./thumb/wh')],
-    [/^\/([sn])?([ew])?thumb(\d+)x(\d+)$/, require('./thumb/bias')],
-];
+const {route, register} = require('../router');
+const {modules} = require('../utils');
 
 // process the response of the route
 const next = (response) => {
     return console.info(response);
 };
 
-while (routes.length) {
-    const [route, handle] = routes.shift();
-    register(route, handle, next);
-}
+register(next)(
+    modules('./src/routes'),
+);
 
 /**
  * User: Oleg Kamlowski <n@sovrin.de>

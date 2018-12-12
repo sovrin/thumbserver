@@ -1,3 +1,6 @@
+const {readdirSync} = require('fs');
+const {resolve} = require('path');
+
 /**
  *
  * @param s
@@ -16,10 +19,34 @@ const render = (s, obj = {}) => {
 };
 
 /**
+ *
+ * @param path
+ * @return {Array}
+ */
+const modules = (path) => {
+    const filter = ((file) => file !== 'index.js');
+
+    const map = (name) => {
+        const file = resolve(path, name);
+
+        if (!name.includes('.js') ) {
+            return modules(file);
+        }
+
+        return require(file);
+    };
+
+    return readdirSync(path)
+        .filter(filter)
+        .map(map)
+    ;
+};
+
+/**
  * User: Oleg Kamlowski <n@sovrin.de>
  * Date: 11.12.2018
  * Time: 19:26
  */
 module.exports = {
-    render
+    render, modules
 };

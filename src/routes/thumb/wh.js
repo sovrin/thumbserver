@@ -3,6 +3,11 @@
  * Date: 11.12.2018
  * Time: 19:26
  */
-module.exports = (param, next, send) => {
-    send(param);
+module.exports = (match) => {
+    match(/^\/thumb(\d+)x(\d+)$/);
+
+    return (param, next, send) => {
+        send(param);
+        next('final');
+    };
 };
