@@ -1,17 +1,21 @@
-const {route, register, use} = require('../router');
+const {send} = require('micro');
 const {modules} = require('../utils');
+const Router = require('../lib/Router');
+
+const router = new Router((req, res) => {
+    send(res, 404);
+});
 
 // process the response of the route
-const next = (response) => {
-    console.info(response);
+const end = (res) => (value) => {
 
-    return response;
+    send(res, 200, value);
+    return value;
 };
 
-use(require('../middlewares/logging'));
-use(require('../middlewares/test'));
+router.use(require('../middlewares/cached'));
 
-register(next)(
+router.register(end)(
     modules('./src/routes'),
 );
 
@@ -20,4 +24,4 @@ register(next)(
  * Date: 11.12.2018
  * Time: 19:26
  */
-module.exports = route;
+module.exports = (req, res) => router.route(req, res);

@@ -1,5 +1,6 @@
 const {readdirSync} = require('fs');
 const {resolve} = require('path');
+const {spawn} = require('child_process');
 
 /**
  *
@@ -56,10 +57,40 @@ const middleware = (service, middleware = []) => (
 );
 
 /**
+ *
+ * @param executable
+ * @param args
+ * @param options
+ */
+const executor = (executable, args, options = {}) => (
+    new Promise((resolve, reject) => {
+        let stdout = '', stderr = '';
+        const process = spawn(executable, args, options);
+
+        process.stdout.on('data', chunk => {
+            stdout += chunk;
+        });
+
+        process.stderr.on('data', chunk => {
+            stderr += chunk;
+        });
+
+        process
+            .on('error', error => reject(error))
+            .on('close', code => resolve({
+                code,
+                error: stderr.trim(),
+                output: stdout.trim()
+            }))
+        ;
+    })
+);
+
+/**
  * User: Oleg Kamlowski <n@sovrin.de>
  * Date: 11.12.2018
  * Time: 19:26
  */
 module.exports = {
-    render, modules, middleware
+    render, modules, middleware, executor
 };

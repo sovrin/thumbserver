@@ -17,7 +17,8 @@ const service = (entry) => {
             silent: false,
             host: '::',
             port: 3000,
-            limit: '1mb', _: {},
+            limit: '1mb',
+            _: {},
         };
         micro(path, flags);
     }

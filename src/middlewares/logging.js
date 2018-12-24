@@ -1,11 +1,11 @@
 /**
  *
- * @param handle
+ * @param next
  * @return {function(...[*]): *}
  */
-const logging = (handle) => (...args) => {
-    // execute route handle
-    const data = handle(...args);
+const logging = (next) => (...args) => {
+    // execute route next
+    const data = next(...args);
 
     console.info(data);
     return data;
